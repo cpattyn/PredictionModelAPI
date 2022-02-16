@@ -15,7 +15,6 @@
 ## Sommaire:
 
    1. [Description du projet](#section-project-desc)
-
       1.1. [Contenu du projet](#section-project-content)  
       1.2. [Fonctionnalités de l'API](#section-api-functionality)  
 
@@ -25,22 +24,13 @@
 
    4. [Utilisation de l'API](#section-use-api)
 
+   5. [Description plus détaillée du projet] (#section-project-detail)
+      5.1 [Technologies utilisées](#section-techno)
+      5.2 [Description du contenu du projet](#section-desc-content)
 
+   6. [Procédures annexes](#section-annexe-procs)
 
-
-
-
-   2. [Travail réalisé](#section-work-done)  
-   
-      2.1. [Architecture du projet](#section-architecture)  
-      2.2. [Technologies utilisées](#section-techno)  
-      2.3. [Description du contenu du projet](#section-desc-content)  
-
-   3. [Et après...](#section-after)
-
-   4. [Procédures annexes](#section-annexe-procs)
-
-   5. [Liens externers](#section-external-links)
+   7. [Liens externers](#section-external-links)
 
 ---
 
@@ -350,76 +340,15 @@ curl -X POST http://localhost:5000/prediction -H 'Content-Type: application/json
 "winddir3pm": "ENE","raintoday": "yes"}}'
 ```
 
+<br/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## 2. Travail réalisé <a name='section-work-done'></a>
+## 5. Description plus détaillée du projet <a name='section-project-detail'></a>
 [Back to top](#cell-toc)
 
-<br/>
-
-
-Le projet a été traité dans son intégralité et les différents tests que nous avons réalisés ont tous été exécutés avec succès.
-
-Nous allons commencer ci-dessous par décrire brièvement l'architecture du projet ainsi que le contenu de ce qui a été livré.
 
 <br/>
 
-### [2.1] Architecture du projet <a name='section-architecture'></a>
-[Back to top](#cell-toc)
-
-L'architecture du projet est composée des éléments suivants:
-
-   * **VM**  
-   
-     Il s'agit ici d'une machine virtuelle (mise à notre disposition par datascientest).  
-     Cette machine aura pour rôle d'hébergée <u>minikube</u> (un environnement de test pour kubernetes permettant de simuler plusieurs noeuds depuis une même machine).  
-
-
-   * **API**  
-
-     Ce que nous nommerons par API correspond en fait à une API REST dont l'objectif est la mise à disposition des modèles de Machine Learning qui ont été préparés dans le cadre du projet 1.  
-     Nous concernant, ces modèles de machine learning doivent prédire s'il pleuvra ou non le lendemain dans une des villes d'Australie (parmi une liste prédéfinie).  
-     Par respect des consignes du projet, l'API REST sera hébergée dans un environnement kubernetes composé d'un replicaset de taille 3.  
-     A noter que pour des raisons de ressources depuis la VM, nous nous sommes limités lors de nos tests à un réplicaset de taille 1 au lieu de 3 ... en effet notre VM avait des ressources disques qui ne nous permettaient pas d'aller au-delà (considérant nos tailles d'images Docker).
-
-
-   * **CLIENT**  
-
-     Il s'agit ici d'une machine physique que nous nommeront CLIENT.    
-     Cette machine servira au déploiement d'un ensemble de containers Docker clients pour notre API.  
-     L'objectif de ces containers sera de tester les différentes fonctionnalités de l'API.  
-     A noter que ces containers (chargés de tester l'API) ont été hébergés sur une machine différente de la VM pour des raisons de ressources disque.
-
-Cette architecture a été mise en place par le biais des moyens techniques qui vous sont présentés ci-dessous...
-
-<br/>
-
-### [2.2] Technologies utilisées <a name='section-techno'></a>
+### 5.1 Technologies utilisées <a name='section-techno'></a>
 [Back to top](#cell-toc)
 
 Dans le cadre de ce projet nous avons utilisés les différentes briques techniques suivantes:
@@ -450,7 +379,7 @@ Dans le cadre de ce projet nous avons utilisés les différentes briques techniq
 <br/>
 
 
-### [2.3] Description du contenu du projet <a name='section-desc-content'></a>
+### 5.2 Description du contenu du projet <a name='section-desc-content'></a>
 [Back to top](#cell-toc)
 
 > Vous trouverez ci-dessous un descriptif du contenu du travail rendu:
@@ -606,59 +535,32 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
 
    * **src**
 
-
 <br/>
 
 
-<br/>
-
-## 3. Et après... <a name='section-and-after'></a>
-[Back to top](#cell-toc)
-
-<br/>
-
-   * Vous avez accès au guide d'installation dans le fichier:
-     <span style='color:darkgreen;'>docs/installation_guide.md</span>
-
-
-   * Une fois l'installation faite, vous pouvez suivre la documentation ci-dessous pour mettre en route l'API et lancer les clients testeurs:
-     <span style='color:darkgreen;'>docs/run_guide.md</span>
-
-
-
-
-
-
-
-<br/>
-
-## *. Procédures annexes <a name='section-annexe-procs'></a>
+## 6. Procédures annexes <a name='section-annexe-procs'></a>
 [Back to top](#cell-toc)
 
 
-**[\*] Récupération du projet depuis Github** <a name='sect-annexe-get-project'></a>
->>
+**Récupération du projet depuis Github** <a name='sect-annexe-get-project'></a>
+
 Connectez-vous sur la machine cible (celle sur laquelle vous souhaitez récupérer le projet) et rendez vous dans un répertoire au sein duquel nous allons récupérer l'ensemble du projet.  
 Exécutez ensuite la commande suivante:
->>
->>```
->>git clone https://github.com/dav-chris/project2.git ./project
->>```
->>
+
+```bash
+git clone https://github.com/dav-chris/project2.git ./project
+```
+
 Le résultat de cette devrait être le suivant:  
-un répertoire nommé "project2" devrait avoir été créé contenant tout le projet.
->>
+un répertoire nommé "project2" devrait avoir été créé contenant tout le projet.  
+
 Si pour quelque raison que ce soit des difficultés étaient rencontrées lors de cette étape, il serait alors possible d'extraire le projet depuis l'archive qui a été fournie à DataScientest à l'aide de la commande suivante (en ayant pris soin préalablement d'être positionné dans le répertoire devant contenir le projet):
->>
->>```
->>tar xvfz project2-deploiement.tgz
->>```
->>
+
+```bash
+tar xvfz project2-deploiement.tgz
+```
+
 Désormais avec l'une des deux commandes présentées ci-dessus nous devrions avoir le répertoire "project" présent dans le répertoire courant.
-
-
-
-
 
 <br/>
 
