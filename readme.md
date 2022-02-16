@@ -68,48 +68,23 @@ Pour réaliser cela, plusieurs containers ont été créés:
 
 L'API est déployé sur 3 Pods via une configuration Kubernetes.
 
+<br/>
 
 
-### Les consignes
+### Fonctionnalités de l'API
 
-> #### L'API
->> On va dans un premier construire une API avec Flask ou FastAPI.  
->> Cette API devra permettre d'interroger les différents modèles.  
->> Les utilisateurs pourront aussi interroger l'API pour accéder aux performances de l'algorithme sur les jeux de tests.  
->> Enfin il faut permettre aux utilisateurs d'utiliser une identification basique.  
->> (On pourra utiliser le header Authentication et encoder username:password en base 64).  
->> On pourra utiliser la liste d'utilisateurs/mots de passe suivante: 
->> 
->> - alice: wonderland  
->> - bob: builder  
->> - clementine: mandarine 
->> - ... 
->>
+Voici les routes, statuts et fonctionnalités associées de l'API :  
 
-> #### Le container
->> Il s'agira ici de créer un container Docker pour déployer facilement l'API.  
->> On portera une attention particulière aux librairies Python à installer ainsi qu'à leurs différentes versions.   
->>
+<br/>
 
-> #### Les tests
->> Une série de tests devra être créée pour tester l'API contenairisée.
->> On pourra pour cela créé un fichier docker-compose.yml en s'inspirant de ce qui a été fait dans l'évaluation de Docker.  
->>
+| Type | Route | Fonctionnalité | Paramètres |  
+| :--- | :--- | :--- | :--- |  
+| GET  | /status | permet de vérifier que l'application est bien active | - |  
+| GET  | /models | liste les modèles de ML et le model_id qui peuvent être utilisés pour effectuer une prédiction : va-t-il pleuvoir demain  | - |  
+| GET  | /performance/models | liste les performance de chaque modèle entrainés initialement sur un jeu de tests afin d'effectuer une prédiction : va-t-il pleuvoir demain  | - |  
+| POST | /prediction | fournit la probabilité de pleuvoir ou non demain selon les données prévues par le modèle  | header : Authentication, body : model_id,features |          
 
-> #### Kubernetes
->> On pourra enfin créer un fichier de déploiement ainsi qu'un Service et un Ingress avec Kubernetes pour permettre le déploiement de l'API sur au moins 3 Pods.
-
-
-### Rendu
-
-> Les attendus sont un fichier pdf contenant des précisions sur les fichiers, sur les différentes étapes ainsi que sur les choix effectués.  
-> On devra aussi rendre un repo Github sur lequel seront les fichiers suivants:
->  
-> * fichiers sources de l'API
-> * Dockerfile de l'API
-> * dans un dossier l'ensemble des fichiers utilisés pour créer les tests
-> * les fichiers de déploiements de Kubernetes
-> * tout autre fichier ayant été utilisés pour faire ce projet. 
+Un export de workspace Postman est disponible (depuis le répertoire "Postman" à la racine du projet) avec un exemple de chaque appel.
 
 
 
