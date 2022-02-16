@@ -17,15 +17,16 @@
    2. [Installation](#section-install)
    
    2. [Travail réalisé](#section-work-done)  
+   
       2.1. [Architecture du projet](#section-architecture)  
       2.2. [Technologies utilisées](#section-techno)  
       2.3. [Description du contenu du projet](#section-desc-content)  
-      
+
    3. [Et après...](#section-after)
 
-    . [Procédures annexes](#section-annexe-procs)
+   4. [Procédures annexes](#section-annexe-procs)
 
-   4. [Liens externers](#section-external-links)
+   5. [Liens externers](#section-external-links)
 
 ---
 
@@ -380,13 +381,121 @@ La procédure décrite ci-dessous permettra le déploiement et la mise en servic
 > 3. Suivez la procédure suivante pour récupérer le projet  
      [procédure de récupération du projet](#sect-annexe-get-project)
      
-> 4. Création de l'environnement kubernetes  
+> 4. Pré-requis pour l'utilisation d'ingress  
+     Nous devons à présent exécuter la commande suivante car l'environnement kubernetes cible mis en place dans le cadre 
+     de ce projet fait usage d'un ingress.  
+     Pour que tout fonctionne avec minikube, nous devons au préalable activer le controlleur Ingress à l'aide de la commande suivante:  
+>>
+>>`minikube addons enable ingress`
+
+> 5. Création de l'environnement kubernetes  
      Les commandes suivantes vont permettre de déployer l'environnement kubernetes et d'instancier l'API dans un replicaset de taille: 3     
-> 
 >>
->>cd project/build/kubernetes  
->>./create.sh  
+>>`cd project/build/kubernetes`  
+>>`./create.sh`  
 >>
+Vous devriez obtenir le résultat suivant au niveau du terminal:  
+>>
+>>> deployment.apps/project2-deployment created  
+>>> service/project2-service created  
+>>> ingress.networking.k8s.io/project2-ingress created  
+>>
+Désormais l'API devrait être démarrée au sein d'un container lui-même hébergé dans un Pod au sein d'un environnement kubernetes et plus précisément au sein d'un replicaset de taille 3.
+>
+> 6. Info sur le service
+     Exécutez la commande suivante pour afficher les informations sur le service kubernetes qui a été créé pour l'API:
+>>
+>>   `kubectl get service project2-service`
+>
+     Si tout c'est bien passé vous devriez obtenir quelque chose comme suit:
+>>   NAME               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE  
+>>   project2-service   NodePort   10.98.199.16   <none>        5001:32616/TCP   4m41s  
+>
+     L'adresse IP (cluster-ip) et le numéro de port (32616) pourront être éventuellement différent sur votre affichage.
+>
+> 7. Service URL
+     Nous allons ici récupérer les informations qui nous permettrons d'accéder à l'API via le service kubernetes.  
+     Pour cela exécutez la commande suivante:
+>>
+>>   `minikube service project2-service --url`
+>
+     Vous devriez obtenir un résultat similaire à celui-ci:
+>>   http://192.168.49.2:32616  
+>
+     Une nouvelle fois vous pouvez obtenir une adresse IP différente de celle affichée et même chose pour le numéro de port.
+>
+> 8. Test manuel de l'API  
+     Nous allons à présent faire un test manuel pour vérifier que l'API est bien joignable via le service kubernetes.  
+     Pour cela exécutez la commande suivante:  
+>>
+>>   `curl -X GET http://192.168.49.2:32616/status`
+>
+     Le début de l'URL à utiliser pour joindre l'API est celle qui a été retourné par la commande de l'étape précédente.  
+     Vous devrez utiliser l'IP et le port qui a été affiché.
+     Le résultat attendu est le suivant:
+>>
+>>```
+     {  
+         "api":"project #2 - d\u00e9ploiement"  
+       , "authors":["Christelle PATTYN","David CHARLES-ELIE-NELSON"]  
+       , "context":"formation Data Engineer"  
+       , "status":"ok"  
+     }  
+>>```  
+>
+    Ici nous voyons que nous avons bien reçu un retour de l'API: l'API est donc parfaitement joignable depuis la machine server (celle qui héberge l'environnement kubernetes qui contient l'API).
+    Il nous reste cependant à vérifier le bon fonctionnement de l'API depuis une machine cliente (différente de celle sur laquelle nous sommes en ce moment).  
+    Pour cela, nous allons déployer les containers de tests qui auront la tâche de lancer plusieurs requêtes à l'API et d'en vérifier que le résultat onbtenu est bien celui attendu pour chacune des requêtes.
+    Reportez-vous sur la procédure "Lancer les tests de bon fonctionnement de l'API" ci-dessous.
+
+
+<br/>
+
+## . Lancer les tests de bon fonctionnement de l'API <a name='section-test-run-api'></a>
+[Back to top](#cell-toc)
+
+La procédure décrite ci-dessous permettra de valider le bon fonctionnement de l'API en réalisant des requêtes de test 
+prédéfinies. Ces requêtes seront exécutées par des containers Docker qui contienne la partie cliente du projet et qui réaliseront des requêtes sur l'API depuis un code Python. Les retours fait par l'API seront analysés par les containers qui nous avertiront si des erreurs sont détectées.
+
+<u>Procédure de lancement des tests de l'API</u>:
+
+> 1. Connectez vous sur la machine cliente (machine Linux différente de celle ou tourne l'API)
+
+> 2. Rendez vous dans un répertoire dans lequel nous allons récupérer le projet
+
+> 3. Suivez la procédure suivante pour récupérer le projet  
+     [procédure de récupération du projet](#sect-annexe-get-project)
+     
+> 4. Lancement d'une redirection de port  
+     Pour que la machine cliente puisse joindre l'API, nous allons dans un premier temps devoir faire une redirection de port. Pour cela, exécutez la commande suivante en prenant soin de remplacer:
+     - <key.pem\>  
+       par le nom du fichier correspondant à la clé permettant de se connecter à la machine server
+     - <username\>  
+       par le nom du compte utilisateur permettant de se connecter à la machine server depuis la machine cliente       
+     - <machine_server_ip\>  
+       par l'adresse IP de la machine qui contient l'API
+     - <service_id\>  
+       par l'adresse du service kubernetes (cette adresse est celle qui a été retournée à l'étape "Service URL" dans la procédure "Procédure de déploiement et démarrage de l'API")
+     - <service_port\>  
+       par le port du service kubernetes (ce port est celui qui a été retourné à l'étape "Service URL" dans la procédure "Procédure de déploiement et démarrage de l'API")  
+>>
+>>   `ssh -i <key.pem\> <username\>@<machine_server_ip\> -fNL 5000:<service_id\>:<service_port\>`
+>
+     Exemple:
+>>
+>>   `ssh -i "data_enginering_machine.pem" ubuntu@34.244.189.52 -fNL 5000:192.168.49.2:32616`
+
+> 5. Lancement des containers de tests
+     Nous allons dans un premier temps nous positionner dans le répertoire comportant les fichiers de configuration de docker-compose à l'aide de la commande suivante:
+>>
+     `cd project/build/docker/compose`
+>    
+     Une fois positionné dans ce répertoire, lancer docker compose avec la commande:  
+>>
+>>   `docker-compose up`
+
+
+
 
 
 <br/>
@@ -401,11 +510,11 @@ Connectez-vous sur la machine cible (celle sur laquelle vous souhaitez récupér
 Exécutez ensuite la commande suivante:
 >>
 >>```
->>git clone xxxxxxxxx
+>>git clone https://github.com/dav-chris/project2.git ./project
 >>```
 >>
 Le résultat de cette devrait être le suivant:  
-un répertoire nommé "project" devrait avoir été créé contenant tout le projet.
+un répertoire nommé "project2" devrait avoir été créé contenant tout le projet.
 >>
 Si pour quelque raison que ce soit des difficultés étaient rencontrées lors de cette étape, il serait alors possible d'extraire le projet depuis l'archive qui a été fournie à DataScientest à l'aide de la commande suivante (en ayant pris soin préalablement d'être positionné dans le répertoire devant contenir le projet):
 >>

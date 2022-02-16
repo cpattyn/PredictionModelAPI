@@ -90,6 +90,11 @@ class APITest(ABC):
          test_status['err_reason'] = f'Failed to retrieved the status_code:\n{str(err)}'
 
       if status_code is not None:
+         try:
+            responseData = apiResponse.json()
+         except Exception:
+            responseData = None
+
          if (self.expected_code == status_code):
             test_status['status']     = 'SUCCESS'
             test_status['err_reason'] = None
