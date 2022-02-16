@@ -134,6 +134,7 @@ La procédure d'installation qui est décrite ci-dessous suppose que nous dispos
 
 La procédure décrite ci-dessous permettra le déploiement et la mise en service de l'API sur la machine server 
 
+---
 
 <u>Procédure de déploiement et démarrage de l'API</u>:
 
@@ -195,7 +196,8 @@ minikube service project2-service --url
 
    Une nouvelle fois vous pouvez obtenir une adresse IP différente de celle affichée et même chose pour le numéro de port.
 
-8. Test manuel de l'API  
+**8. Test manuel de l'API**  
+
    Nous allons à présent faire un test manuel pour vérifier que l'API est bien joignable via le service kubernetes.  
    Pour cela exécutez la commande suivante:  
 
@@ -206,16 +208,16 @@ minikube service project2-service --url
      Le début de l'URL à utiliser pour joindre l'API est celle qui a été retourné par la commande de l'étape précédente.  
      Vous devrez utiliser l'IP et le port qui a été affiché.
      Le résultat attendu est le suivant:
->>
->>```
+
+```json
      {  
          "api":"project #2 - d\u00e9ploiement"  
        , "authors":["Christelle PATTYN","David CHARLES-ELIE-NELSON"]  
        , "context":"formation Data Engineer"  
        , "status":"ok"  
      }  
->>```  
->
+```  
+
     Ici nous voyons que nous avons bien reçu un retour de l'API: l'API est donc parfaitement joignable depuis la machine server (celle qui héberge l'environnement kubernetes qui contient l'API).
     Il nous reste cependant à vérifier le bon fonctionnement de l'API depuis une machine cliente (différente de celle sur laquelle nous sommes en ce moment).  
     Pour cela, nous allons déployer les containers de tests qui auront la tâche de lancer plusieurs requêtes à l'API et d'en vérifier que le résultat onbtenu est bien celui attendu pour chacune des requêtes.
