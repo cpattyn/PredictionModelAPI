@@ -1,4 +1,6 @@
+
 ---
+
 # Projet 2 : Déploiement d'une API de Machine Learning
 ## Formation: Data Engineer
 
@@ -35,10 +37,35 @@
 
 <br/>
 
-### Objectifs
+### Contenu du projet
 
-> L'objectif de ce projet est de déployer les modèles créés dans le cadre du projet #1.
-> Attention, en production, les modèles ne devront pas être ré-entrainés ! 
+Ce projet consiste au déploiement des modèles de Machine Learning créés dans le cadre du projet #1. Il s'agit de quatre modèles permettant de prédire s'il va pleuvoir ou non demain dans l'une des cinq plus grandes villes d'Australie.
+
+Ces modèles sont enregistrés et ne sont pas ré-entrainés.
+
+Une API a été construite permettant d'interroger ces modèles sans être ré-entrainés. Celle ci a été développée via la librairie Flask de Python.
+
+Les modèles conservés et qui seront accessibles côté API sont les modèles : 
+- Decision Tree
+- Logistic Regression
+- Random Forest
+- Support Vector Machine
+
+L'API permet : 
+- de vérifier qu'elle bien active via son statut
+- de lister les modèles disponibles
+- de consulter les performances obtenues pour chacun des modèles sur les jeux de tests
+- d'effectuer un test de prédiction par modèle
+
+Le test de prédiction n'est possible que pour les personnes authentifiées, ie dont les informations de connexion sont présentes dans le fichier credentials.csv
+
+Pour réaliser cela, plusieurs containers ont été créés : 
+- un container Docker avec un serveur Ubuntu
+- un container Docker contenant l'API
+- plusieurs containers de tests pour valider l'API
+
+L'API est déployé sur 3 Pods via une configuration Kubernetes.
+
 
 
 ### Les consignes
@@ -493,7 +520,8 @@ prédéfinies. Ces requêtes seront exécutées par des containers Docker qui co
      Une fois positionné dans ce répertoire, lancer docker compose avec la commande:  
 >>
 >>   `docker-compose up`
-
+>
+     Il ne restera plus qu'à analyser l'affichage pour vérifier que tous les tests se sont bien passés.
 
 
 
