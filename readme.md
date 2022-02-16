@@ -21,10 +21,13 @@
 
    2. [Installation](#section-install)
 
+   3. [Lancer les tests de bon fonctionnement de l'API](#section-test-run-api)
 
 
 
-   
+
+
+
    2. [Travail réalisé](#section-work-done)  
    
       2.1. [Architecture du projet](#section-architecture)  
@@ -229,6 +232,70 @@ Reportez-vous sur la procédure "Lancer les tests de bon fonctionnement de l'API
 
 
 
+<br/>
+
+## 3. Lancer les tests de bon fonctionnement de l'API <a name='section-test-run-api'></a>
+[Back to top](#cell-toc)
+
+La procédure décrite ci-dessous permettra de valider le bon fonctionnement de l'API en réalisant des requêtes de test 
+prédéfinies.  
+Ces requêtes seront exécutées par des containers Docker qui contienne la partie cliente du projet et qui réaliseront des requêtes sur l'API depuis un code Python.  
+Les retours fait par l'API seront analysés par les containers qui nous avertiront si des erreurs sont détectées.
+
+<u>Procédure de lancement des tests de l'API</u>:
+
+**1. Connection à la machine cliente**  
+
+Connectez vous sur la machine cliente (machine Linux différente de celle ou tourne l'API) et rendez vous dans un répertoire dans lequel nous allons récupérer le projet
+
+**2. Suivez la procédure suivante pour récupérer le projet**  
+
+[procédure de récupération du projet](#sect-annexe-get-project)
+     
+**3. Redirection de port**
+
+Pour que la machine cliente puisse joindre l'API, nous allons dans un premier temps devoir faire une redirection de port. Pour cela, exécutez la commande suivante en prenant soin de remplacer:
+   - <key.pem\>  
+     par le nom du fichier correspondant à la clé permettant de se connecter à la machine server
+     
+   - <username\>  
+     par le nom du compte utilisateur permettant de se connecter à la machine server depuis la machine cliente       
+
+
+   - <machine_server_ip\>  
+     par l'adresse IP de la machine qui contient l'API
+
+
+   - <service_id\>  
+     par l'adresse du service kubernetes (cette adresse est celle qui a été retournée à l'étape "Service URL" dans la procédure "Procédure de déploiement et démarrage de l'API")
+
+
+   - <service_port\>  
+     par le port du service kubernetes (ce port est celui qui a été retourné à l'étape "Service URL" dans la procédure "Procédure de déploiement et démarrage de l'API")  
+     
+
+```bash
+ssh -i <key.pem\> <username\>@<machine_server_ip\> -fNL 5000:<service_id\>:<service_port\>
+```
+
+Exemple:
+>
+>   `ssh -i "data_enginering_machine.pem" ubuntu@34.244.189.52 -fNL 5000:192.168.49.2:32616`
+
+**4. Lancement des containers de tests**  
+
+Nous allons dans un premier temps nous positionner dans le répertoire comportant les fichiers de configuration de docker-compose à l'aide de la commande suivante:
+
+```bash
+cd project/build/docker/compose
+```
+
+Une fois positionné dans ce répertoire, lancer docker compose avec la commande:  
+```bash
+docker-compose up
+```
+
+Il ne restera plus qu'à analyser l'affichage pour vérifier que tous les tests se sont bien passés.
 
 
 
@@ -508,52 +575,6 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
 
 
 
-<br/>
-
-## . Lancer les tests de bon fonctionnement de l'API <a name='section-test-run-api'></a>
-[Back to top](#cell-toc)
-
-La procédure décrite ci-dessous permettra de valider le bon fonctionnement de l'API en réalisant des requêtes de test 
-prédéfinies. Ces requêtes seront exécutées par des containers Docker qui contienne la partie cliente du projet et qui réaliseront des requêtes sur l'API depuis un code Python. Les retours fait par l'API seront analysés par les containers qui nous avertiront si des erreurs sont détectées.
-
-<u>Procédure de lancement des tests de l'API</u>:
-
-> 1. Connectez vous sur la machine cliente (machine Linux différente de celle ou tourne l'API)
-
-> 2. Rendez vous dans un répertoire dans lequel nous allons récupérer le projet
-
-> 3. Suivez la procédure suivante pour récupérer le projet  
-     [procédure de récupération du projet](#sect-annexe-get-project)
-     
-> 4. Lancement d'une redirection de port  
-     Pour que la machine cliente puisse joindre l'API, nous allons dans un premier temps devoir faire une redirection de port. Pour cela, exécutez la commande suivante en prenant soin de remplacer:
-     - <key.pem\>  
-       par le nom du fichier correspondant à la clé permettant de se connecter à la machine server
-     - <username\>  
-       par le nom du compte utilisateur permettant de se connecter à la machine server depuis la machine cliente       
-     - <machine_server_ip\>  
-       par l'adresse IP de la machine qui contient l'API
-     - <service_id\>  
-       par l'adresse du service kubernetes (cette adresse est celle qui a été retournée à l'étape "Service URL" dans la procédure "Procédure de déploiement et démarrage de l'API")
-     - <service_port\>  
-       par le port du service kubernetes (ce port est celui qui a été retourné à l'étape "Service URL" dans la procédure "Procédure de déploiement et démarrage de l'API")  
->>
->>   `ssh -i <key.pem\> <username\>@<machine_server_ip\> -fNL 5000:<service_id\>:<service_port\>`
->
-     Exemple:
->>
->>   `ssh -i "data_enginering_machine.pem" ubuntu@34.244.189.52 -fNL 5000:192.168.49.2:32616`
-
-> 5. Lancement des containers de tests
-     Nous allons dans un premier temps nous positionner dans le répertoire comportant les fichiers de configuration de docker-compose à l'aide de la commande suivante:
->>
-     `cd project/build/docker/compose`
->    
-     Une fois positionné dans ce répertoire, lancer docker compose avec la commande:  
->>
->>   `docker-compose up`
->
-     Il ne restera plus qu'à analyser l'affichage pour vérifier que tous les tests se sont bien passés.
 
 
 
