@@ -24,7 +24,7 @@
 
    4. [Utilisation de l'API](#section-use-api)
 
-   5. [Description plus détaillée du projet] (#section-project-detail)
+   5. [Description plus détaillée du projet](#section-project-detail)
       5.1 [Technologies utilisées](#section-techno)
       5.2 [Description du contenu du projet](#section-desc-content)
 
