@@ -23,6 +23,8 @@
 
    3. [Lancer les tests de bon fonctionnement de l'API](#section-test-run-api)
 
+   4. [Utilisation de l'API](#section-use-api)
+
 
 
 
@@ -298,6 +300,55 @@ docker-compose up
 Il ne restera plus qu'à analyser l'affichage pour vérifier que tous les tests se sont bien passés.
 
 
+## 4. Utilisation de l'API <a name='section-use-api'></a>
+[Back to top](#cell-toc)
+
+Effectuez la redirection de port du poste client comme expliqué dans le paragraphe précédent.  
+Importez le workspace Postman qui contient des exemples d'appels pour chaque route de l'API. 
+
+Dans le cas où vous souhaitez tester s'il va pleuvoir demain ou pas, l'API peut recevoir toutes les données attendues en entrée, mais fonctionne également si seule une partie des variables en entrée est fournie. L'API dans ce cas va définir les autres variables de manière aléatoire, en fonction des valeurs prévues, et pour les variables quantitatives les valeurs minimales et maximales qui avaient été observées dans l'échantillon de données utilisées pour entrainer le modèle.
+
+Voici un exemple des commandes CURL :
+
+* Tester la disponibilité de l'API
+
+```bash
+curl -X GET http://localhost:5000/status  
+```
+
+* Obtenir la liste des modèles disponibles pour l'API
+
+```bash
+curl -X GET http://localhost:5000/models  
+```
+
+* Obtenir la performance de chacun des modèles disponibles pour l'API
+
+```
+curl -X GET http://localhost:5000/performance/models  
+```
+
+* Obtenir la performance d'un modèle en particulier
+
+La requête ressemblera à ceci:
+curl -X GET http://localhost:5000/performance/model/<ModelId\>  
+
+Exemple:
+```bash
+curl -X GET http://localhost:5000/performance/model/db5f7fb6-8ddf-420c-a485-4517c3200a64  
+```
+
+* Obtenir une prédiction sur la pluie à l'API
+
+```bash
+curl -X POST http://localhost:5000/prediction -H 'Content-Type: application/json' \
+-H 'Authentication:UmhpYW5ub246MzU0NQ==' \
+-d '{"model_id": "db5f7fb6-8ddf-420c-a485-4517c3200a64", "features":{"mintemp": "10","maxtemp": "20",\
+"rainfall": "0.4","windgustspeed": "37.0","windspeed9am": "17.0","windspeed3pm": "11.0","humidity9am": "62.0",\
+"humidity3pm": "65.0","pressure9am": "1019.2","pressure3pm": "1011.4","temp9am": "15.1","temp3pm": "17.6",\
+"year": "2022","month": "2","day": "8","location": "Sydney","windgustdir": "NNW","winddir9am": "ESE",\
+"winddir3pm": "ENE","raintoday": "yes"}}'
+```
 
 
 
