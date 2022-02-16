@@ -153,25 +153,28 @@ La procédure décrite ci-dessous permettra le déploiement et la mise en servic
 minikube addons enable ingress
 ```
 
-> 5. Création de l'environnement kubernetes  
+5. Création de l'environnement kubernetes  
      Les commandes suivantes vont permettre de déployer l'environnement kubernetes et d'instancier l'API dans un replicaset de taille: 3     
->>
->>`cd project/build/kubernetes`  
->>`./create.sh`  
->>
+
+```bash
+cd project/build/kubernetes
+./create.sh
+```
+
 Vous devriez obtenir le résultat suivant au niveau du terminal:  
->>
->>> deployment.apps/project2-deployment created  
->>> service/project2-service created  
->>> ingress.networking.k8s.io/project2-ingress created  
->>
+
+> deployment.apps/project2-deployment created  
+> service/project2-service created  
+> ingress.networking.k8s.io/project2-ingress created  
+
 Désormais l'API devrait être démarrée au sein d'un container lui-même hébergé dans un Pod au sein d'un environnement kubernetes et plus précisément au sein d'un replicaset de taille 3.
->
-> 6. Info sur le service
+
+6. Info sur le service
      Exécutez la commande suivante pour afficher les informations sur le service kubernetes qui a été créé pour l'API:
->>
->>   `kubectl get service project2-service`
->
+
+```bash
+kubectl get service project2-service
+```
      Si tout c'est bien passé vous devriez obtenir quelque chose comme suit:
 >>   NAME               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE  
 >>   project2-service   NodePort   10.98.199.16   <none>        5001:32616/TCP   4m41s  
