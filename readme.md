@@ -144,13 +144,12 @@ La procédure décrite ci-dessous permettra le déploiement et la mise en servic
 
 **3. Suivez la procédure suivante pour récupérer le projet**  
   
-     [procédure de récupération du projet](#sect-annexe-get-project)
+[procédure de récupération du projet](#sect-annexe-get-project)
      
 **4. Pré-requis pour l'utilisation d'ingress**  
   
-     Nous devons à présent exécuter la commande suivante car l'environnement kubernetes cible mis en place dans le cadre 
-     de ce projet fait usage d'un ingress.  
-     Pour que tout fonctionne avec minikube, nous devons au préalable activer le controlleur Ingress à l'aide de la commande suivante:  
+Nous devons à présent exécuter la commande suivante car l'environnement kubernetes cible mis en place dans le cadre de ce projet fait usage d'un ingress.  
+Pour que tout fonctionne avec minikube, nous devons au préalable activer le controlleur Ingress à l'aide de la commande suivante:  
 
 ```bash
 minikube addons enable ingress
