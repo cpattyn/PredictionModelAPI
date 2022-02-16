@@ -143,9 +143,11 @@ La procédure décrite ci-dessous permettra le déploiement et la mise en servic
 **2. Rendez vous dans un répertoire dans lequel nous allons récupérer le projet**  
 
 **3. Suivez la procédure suivante pour récupérer le projet**  
+  
      [procédure de récupération du projet](#sect-annexe-get-project)
      
 **4. Pré-requis pour l'utilisation d'ingress**  
+  
      Nous devons à présent exécuter la commande suivante car l'environnement kubernetes cible mis en place dans le cadre 
      de ce projet fait usage d'un ingress.  
      Pour que tout fonctionne avec minikube, nous devons au préalable activer le controlleur Ingress à l'aide de la commande suivante:  
@@ -156,7 +158,7 @@ minikube addons enable ingress
 
 **5. Création de l'environnement kubernetes**  
 
-     Les commandes suivantes vont permettre de déployer l'environnement kubernetes et d'instancier l'API dans un replicaset de taille: 3     
+   Les commandes suivantes vont permettre de déployer l'environnement kubernetes et d'instancier l'API dans un replicaset de taille: 3     
 
 ```bash
 cd project/build/kubernetes
@@ -172,42 +174,45 @@ Vous devriez obtenir le résultat suivant au niveau du terminal:
 Désormais l'API devrait être démarrée au sein d'un container lui-même hébergé dans un Pod au sein d'un environnement kubernetes et plus précisément au sein d'un replicaset de taille 3.
 
 **6. Info sur le service**  
-   Exécutez la commande suivante pour afficher les informations sur le service kubernetes qui a été créé pour l'API:
+  
+Exécutez la commande suivante pour afficher les informations sur le service kubernetes qui a été créé pour l'API:
 
 ```bash
 kubectl get service project2-service
 ```
-   Si tout c'est bien passé vous devriez obtenir quelque chose comme suit:  
+
+Si tout c'est bien passé vous devriez obtenir quelque chose comme suit:  
 >   NAME               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE  
 >   project2-service   NodePort   10.98.199.16   <none>        5001:32616/TCP   4m41s  
 
-   L'adresse IP (cluster-ip) et le numéro de port (32616) pourront être éventuellement différent sur votre affichage.
+L'adresse IP (cluster-ip) et le numéro de port (32616) pourront être éventuellement différent sur votre affichage.
 
 **7. Service URL**  
 
-   Nous allons ici récupérer les informations qui nous permettrons d'accéder à l'API via le service kubernetes.  
-   Pour cela exécutez la commande suivante:
+Nous allons ici récupérer les informations qui nous permettrons d'accéder à l'API via le service kubernetes.  
+Pour cela exécutez la commande suivante:
 
 ```bash
 minikube service project2-service --url
 ```
-   Vous devriez obtenir un résultat similaire à celui-ci:
+
+Vous devriez obtenir un résultat similaire à celui-ci:
 >   http://192.168.49.2:32616  
 
-   Une nouvelle fois vous pouvez obtenir une adresse IP différente de celle affichée et même chose pour le numéro de port.
+Une nouvelle fois vous pouvez obtenir une adresse IP différente de celle affichée et même chose pour le numéro de port.
 
 **8. Test manuel de l'API**  
 
-   Nous allons à présent faire un test manuel pour vérifier que l'API est bien joignable via le service kubernetes.  
-   Pour cela exécutez la commande suivante:  
+Nous allons à présent faire un test manuel pour vérifier que l'API est bien joignable via le service kubernetes.  
+Pour cela exécutez la commande suivante:  
 
-   ```bash
-   curl -X GET http://192.168.49.2:32616/status
-   ```
+```bash
+curl -X GET http://192.168.49.2:32616/status
+```
 
-     Le début de l'URL à utiliser pour joindre l'API est celle qui a été retourné par la commande de l'étape précédente.  
-     Vous devrez utiliser l'IP et le port qui a été affiché.
-     Le résultat attendu est le suivant:
+Le début de l'URL à utiliser pour joindre l'API est celle qui a été retourné par la commande de l'étape précédente.  
+Vous devrez utiliser l'IP et le port qui a été affiché.  
+Le résultat attendu est le suivant:
 
 ```json
      {  
@@ -218,10 +223,10 @@ minikube service project2-service --url
      }  
 ```  
 
-    Ici nous voyons que nous avons bien reçu un retour de l'API: l'API est donc parfaitement joignable depuis la machine server (celle qui héberge l'environnement kubernetes qui contient l'API).
-    Il nous reste cependant à vérifier le bon fonctionnement de l'API depuis une machine cliente (différente de celle sur laquelle nous sommes en ce moment).  
-    Pour cela, nous allons déployer les containers de tests qui auront la tâche de lancer plusieurs requêtes à l'API et d'en vérifier que le résultat onbtenu est bien celui attendu pour chacune des requêtes.
-    Reportez-vous sur la procédure "Lancer les tests de bon fonctionnement de l'API" ci-dessous.
+Ici nous voyons que nous avons bien reçu un retour de l'API: l'API est donc parfaitement joignable depuis la machine server (celle qui héberge l'environnement kubernetes qui contient l'API).  
+Il nous reste cependant à vérifier le bon fonctionnement de l'API depuis une machine cliente (différente de celle sur laquelle nous sommes en ce moment).  
+Pour cela, nous allons déployer les containers de tests qui auront la tâche de lancer plusieurs requêtes à l'API et d'en vérifier que le résultat onbtenu est bien celui attendu pour chacune des requêtes.  
+Reportez-vous sur la procédure "Lancer les tests de bon fonctionnement de l'API" ci-dessous.  
 
 
 
