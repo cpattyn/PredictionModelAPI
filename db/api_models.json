@@ -1,0 +1,20 @@
+{
+   "api_models": {
+         "db5f7fb6-8ddf-420c-a485-4517c3200a64": {
+               "type"    : "Decision Tree"
+            ,  "filename": "decisionTree.joblib"
+         }
+      ,  "59fa8691-f141-4cd9-8c50-4dc7138950d5": {
+               "type"    : "Logistic Regression"
+            ,  "filename": "logisticRegression.joblib"
+         }
+      ,  "86fed39b-c93f-4d70-aa5c-fece6d8dcb53": {
+               "type"    : "Random Forest"
+            ,  "filename": "randomForest.joblib"
+         }
+      ,  "c4dff96c-d447-4e06-a0bc-a7d158afc856": {
+               "type"    : "Support Vector Machine"
+            ,  "filename": "supportVectorMachine.joblib"
+         }
+   }
+}

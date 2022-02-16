@@ -1,0 +1,43 @@
+version: "2.2"
+services:
+  project2-api-test_status:
+    image: dcentech/project2-client-tester
+    container_name: project2-testapi-status
+    environment:
+      ROLE: 'status'
+      API_HOST: ${API_SERVER_HOST}
+      API_PORT: ${API_SERVER_PORT}
+    network_mode: "host"
+  project2-api-test_list:
+    image: dcentech/project2-client-tester
+    container_name: project2-testapi_list
+    environment:
+      ROLE: 'models_list'
+      API_HOST: ${API_SERVER_HOST}
+      API_PORT: ${API_SERVER_PORT}
+    network_mode: "host"
+  project2-api-test-perf:
+    image: dcentech/project2-client-tester
+    container_name: project2-testapi-perf
+    environment:
+      ROLE: 'performance_all_models'
+      API_HOST: ${API_SERVER_HOST}
+      API_PORT: ${API_SERVER_PORT}
+    network_mode: "host"
+  project2-api-test-auth:
+    image: dcentech/project2-client-tester
+    container_name: project2-testapi-auth
+    environment:
+      ROLE: 'authentication'
+      API_HOST: ${API_SERVER_HOST}
+      API_PORT: ${API_SERVER_PORT}
+    network_mode: "host"
+  project2-api-test-prediction:
+    image: dcentech/project2-client-tester
+    container_name: project2-testapi-predfull
+    environment:
+      ROLE: 'prediction'
+      API_HOST: ${API_SERVER_HOST}
+      API_PORT: ${API_SERVER_PORT}
+    network_mode: "host"
+

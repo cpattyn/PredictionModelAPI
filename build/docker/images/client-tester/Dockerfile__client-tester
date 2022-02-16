@@ -1,0 +1,12 @@
+FROM dcentech/project2-ubuntu-python:latest
+
+RUN apt-get update \
+      && apt-get dist-upgrade -y
+
+COPY build/docker/images/client-tester/client-tester_requirements.txt /app/conf/
+COPY src/tests/ /app/src/tests/
+
+RUN python3 -m pip install --upgrade pip \
+      && pip3 install --requirement /app/conf/client-tester_requirements.txt
+
+CMD [ "bash", "-c", "python3 /app/src/tests/main.py" ]

@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "5f4578d6-97d9-4c83-b745-2a7f5a9525d1",
+		"name": "Project2_doc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Model List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/models",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Performance of all models",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/performance/models",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"performance",
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Performance of a unique model",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/performance/model/db5f7fb6-8ddf-420c-a485-4517c3200a64",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"performance",
+						"model",
+						"db5f7fb6-8ddf-420c-a485-4517c3200a64"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request one prediction (full observation)",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authentication",
+						"value": "SmFyZWQ6MjEyNg==",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"model_id\": \"db5f7fb6-8ddf-420c-a485-4517c3200a64\",\n    \"features\": {\n        \"mintemp\": 10,\n        \"maxtemp\": 20,\n        \"rainfall\": 0.4,\n        \"windgustspeed\": 37.0,\n        \"windspeed9am\": 17.0,\n        \"windspeed3pm\": 11.0,\n        \"humidity9am\": 62.0,\n        \"humidity3pm\": 65.0,\n        \"pressure9am\": 1019.2,\n        \"pressure3pm\": 1011.4,\n        \"temp9am\": 15.1,\n        \"temp3pm\": 17.6,\n        \"year\": 2022,\n        \"month\": 2,\n        \"day\": 8,\n        \"location\": \"Sydney\",\n        \"windgustdir\": \"NNW\",\n        \"winddir9am\": \"ESE\",\n        \"winddir3pm\": \"ENE\",\n        \"raintoday\": \"yes\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/prediction?modelId=db5f7fb6-8ddf-420c-a485-4517c3200a64",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"prediction"
+					],
+					"query": [
+						{
+							"key": "modelId",
+							"value": "db5f7fb6-8ddf-420c-a485-4517c3200a64"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request one prediction (partial observation)",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authentication",
+						"value": "SmFyZWQ6MjEyNg==",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"model_id\": \"db5f7fb6-8ddf-420c-a485-4517c3200a64\",\n    \"features\": {\n        \"location\": \"Sydney\",\n        \"raintoday\": \"yes\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/prediction?modelId=db5f7fb6-8ddf-420c-a485-4517c3200a64",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"prediction"
+					],
+					"query": [
+						{
+							"key": "modelId",
+							"value": "db5f7fb6-8ddf-420c-a485-4517c3200a64"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request one prediction (partial observation)",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authentication",
+						"value": "SmFyZWQ6MjEyNg==",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"model_id\": \"db5f7fb6-8ddf-420c-a485-4517c3200a64\",\n    \"features\": {\n        \"mintemp\": 10,\n        \"maxtemp\": 20,\n        \"location\": \"Sydney\",\n        \"raintoday\": \"yes\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/prediction?modelId=db5f7fb6-8ddf-420c-a485-4517c3200a64",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"prediction"
+					],
+					"query": [
+						{
+							"key": "modelId",
+							"value": "db5f7fb6-8ddf-420c-a485-4517c3200a64"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

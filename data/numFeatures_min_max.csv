@@ -1,0 +1,13 @@
+index,min,max
+mintemp,-8.0,27.6
+maxtemp,4.1,46.4
+rainfall,0.0,182.6
+windgustspeed,9.0,104.0
+windspeed9am,0.0,65.0
+windspeed3pm,0.0,61.0
+humidity9am,15.0,100.0
+humidity3pm,4.0,99.0
+pressure9am,986.7,1040.6
+pressure3pm,985.5,1037.9
+temp9am,-1.3,36.5
+temp3pm,3.7,45.4

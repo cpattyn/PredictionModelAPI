@@ -1,0 +1,95 @@
+README.md
+
+[CP]     1) Description du projet
+                  *) description "perso" du projet
+
+
+
+                  *) Présentation de l'API
+
+                        tableau:
+                              type | route | fonctionnalité | paramètres           | exemple |
+                           GET/POST|                          header / corps / url
+
+
+
+[DC]         2) Installation
+
+                 + Récupération du projet depuis Github à déposer sur le poste client
+                 + Architecture matérielle
+                       2 machines:
+                          - vm  -> Kubernetes -> API
+                          - poste client -> Docker Compose -> Testeurs
+
+                 + Depuis la vm:
+                      Prérequis:
+                            minikube installé + démarré
+                            kubectl installé
+                            commandes à lancer:
+                                 minikube addons enable ingress
+                      Installation API
+                            exécution script create.sh
+                            commande get service ...--url  -> IP + PORT
+                            curl -X GET http://IP:5000/status
+                 + Depuis le poste client
+                      - prérequis
+                            docker installé + démon docker démarré -> lien doc
+                            docker compose
+                            pré-requis connexion ssh vers vm pour pouvoir lancer une redirection de port via ssh
+
+[CP]         3) Lancer les tests de l'API
+
+               Lancer les tests de validation de l'API via les containers de tests
+
+                     - redirection port via ssh
+                     - copier fichiers docker-compose + .env dans un répertoire de travail
+                      - lancer docker compose:
+                           docker-compose up
+
+
+
+[CP]         4) Utilisation de l'API
+
+               via Postman par exemple
+
+               Depuis machine cliente décrire comment utiliser l'API (prédiction , liste modèles dispos)
+
+
+
+[DC]         5) Description détaillée
+
+               + Technologies utilisées
+               + Description du contenu du projet
+
+
+[DC]         6) Liens externes
+               - docker hub
+               - github
+
+
+REMINDER:
+      - recup postman
+
+
+
+
+
+
+
+
+
+
+
+- doc sur le notebook -> génération des modèles    [CP]
+- code source SRC/api tests                        [DC]
+- Docker      (setup)                              [CP]
+- Kubernetes  (setup)                              [CP]
+- Run de l'API + tests                             [DC]
+
+
+- GitHub
+      -> Quel compte utilisé ?
+         -> indiqué l'url du compte dans le readme du projet
+
+ATTENTION:
+   replicas = 3 ne tient pas sur la VM !!!
