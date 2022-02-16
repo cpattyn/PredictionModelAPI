@@ -39,30 +39,32 @@
 
 ### Contenu du projet
 
-Ce projet consiste au déploiement des modèles de Machine Learning créés dans le cadre du projet #1. Il s'agit de quatre modèles permettant de prédire s'il va pleuvoir ou non demain dans l'une des cinq plus grandes villes d'Australie.
+Ce projet consiste au déploiement des modèles de Machine Learning créés dans le cadre du projet #1.  
+Il s'agit de quatre modèles permettant de prédire s'il va pleuvoir ou non demain dans l'une des cinq plus grandes villes d'Australie.
 
 Ces modèles sont enregistrés et ne sont pas ré-entrainés.
 
-Une API a été construite permettant d'interroger ces modèles sans être ré-entrainés. Celle ci a été développée via la librairie Flask de Python.
+Une API a été construite permettant d'interroger ces modèles sans être ré-entrainés.  
+Celle ci a été développée via la librairie Flask de Python.
 
-Les modèles conservés et qui seront accessibles côté API sont les modèles : 
-- Decision Tree
-- Logistic Regression
-- Random Forest
-- Support Vector Machine
+Les modèles conservés et qui seront accessibles côté API sont les modèles: 
+   - Decision Tree
+   - Logistic Regression
+   - Random Forest
+   - Support Vector Machine
 
 L'API permet : 
-- de vérifier qu'elle bien active via son statut
-- de lister les modèles disponibles
-- de consulter les performances obtenues pour chacun des modèles sur les jeux de tests
-- d'effectuer un test de prédiction par modèle
+   - de vérifier qu'elle bien active via son statut
+   - de lister les modèles disponibles
+   - de consulter les performances obtenues pour chacun des modèles sur les jeux de tests
+   - d'effectuer un test de prédiction par modèle
 
 Le test de prédiction n'est possible que pour les personnes authentifiées, ie dont les informations de connexion sont présentes dans le fichier credentials.csv
 
-Pour réaliser cela, plusieurs containers ont été créés : 
-- un container Docker avec un serveur Ubuntu
-- un container Docker contenant l'API
-- plusieurs containers de tests pour valider l'API
+Pour réaliser cela, plusieurs containers ont été créés: 
+   - un container Docker avec un serveur Ubuntu
+   - un container Docker contenant l'API
+   - plusieurs containers de tests pour valider l'API
 
 L'API est déployé sur 3 Pods via une configuration Kubernetes.
 
