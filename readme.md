@@ -137,14 +137,14 @@ La procédure décrite ci-dessous permettra le déploiement et la mise en servic
 
 <u>Procédure de déploiement et démarrage de l'API</u>:
 
-1. Connectez vous sur la machine server
+**1. Connectez vous sur la machine server**  
 
-2. Rendez vous dans un répertoire dans lequel nous allons récupérer le projet
+**2. Rendez vous dans un répertoire dans lequel nous allons récupérer le projet**  
 
-3. Suivez la procédure suivante pour récupérer le projet  
+**3. Suivez la procédure suivante pour récupérer le projet**  
      [procédure de récupération du projet](#sect-annexe-get-project)
      
-4. Pré-requis pour l'utilisation d'ingress  
+**4. Pré-requis pour l'utilisation d'ingress**  
      Nous devons à présent exécuter la commande suivante car l'environnement kubernetes cible mis en place dans le cadre 
      de ce projet fait usage d'un ingress.  
      Pour que tout fonctionne avec minikube, nous devons au préalable activer le controlleur Ingress à l'aide de la commande suivante:  
@@ -153,7 +153,8 @@ La procédure décrite ci-dessous permettra le déploiement et la mise en servic
 minikube addons enable ingress
 ```
 
-5. Création de l'environnement kubernetes  
+**5. Création de l'environnement kubernetes**  
+
      Les commandes suivantes vont permettre de déployer l'environnement kubernetes et d'instancier l'API dans un replicaset de taille: 3     
 
 ```bash
@@ -169,7 +170,7 @@ Vous devriez obtenir le résultat suivant au niveau du terminal:
 
 Désormais l'API devrait être démarrée au sein d'un container lui-même hébergé dans un Pod au sein d'un environnement kubernetes et plus précisément au sein d'un replicaset de taille 3.
 
-6. Info sur le service  
+**6. Info sur le service**  
    Exécutez la commande suivante pour afficher les informations sur le service kubernetes qui a été créé pour l'API:
 
 ```bash
@@ -181,7 +182,8 @@ kubectl get service project2-service
 
    L'adresse IP (cluster-ip) et le numéro de port (32616) pourront être éventuellement différent sur votre affichage.
 
-7. Service URL  
+**7. Service URL**  
+
    Nous allons ici récupérer les informations qui nous permettrons d'accéder à l'API via le service kubernetes.  
    Pour cela exécutez la commande suivante:
 
