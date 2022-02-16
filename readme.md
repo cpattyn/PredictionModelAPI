@@ -17,19 +17,13 @@
    1. [Description du projet](#section-project-desc)
       1.1. [Contenu du projet](#section-project-content)  
       1.2. [Fonctionnalités de l'API](#section-api-functionality)  
-
    2. [Installation](#section-install)
-
    3. [Lancer les tests de bon fonctionnement de l'API](#section-test-run-api)
-
    4. [Utilisation de l'API](#section-use-api)
-
    5. [Description plus détaillée du projet](#section-project-detail)  
       5.1 [Technologies utilisées](#section-techno)  
       5.2 [Description du contenu du projet](#section-desc-content)  
-
    6. [Procédures annexes](#section-annexe-procs)
-
    7. [Liens externers](#section-external-links)
 
 ---
