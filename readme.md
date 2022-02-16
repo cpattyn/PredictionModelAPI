@@ -16,7 +16,14 @@
 
    1. [Description du projet](#section-project-desc)
 
+      1.1. [Contenu du projet](#section-project-content)  
+      1.2. [Fonctionnalités de l'API](#section-api-functionality)  
+
    2. [Installation](#section-install)
+
+
+
+
    
    2. [Travail réalisé](#section-work-done)  
    
@@ -37,7 +44,8 @@
 
 <br/>
 
-### Contenu du projet
+### 1.1. Contenu du projet <a name='section-project-content'></a>
+[Back to top](#cell-toc)
 
 Ce projet consiste au déploiement des modèles de Machine Learning créés dans le cadre du projet #1.  
 Il s'agit de quatre modèles permettant de prédire s'il va pleuvoir ou non demain dans l'une des cinq plus grandes villes d'Australie.
@@ -71,7 +79,8 @@ L'API est déployé sur 3 Pods via une configuration Kubernetes.
 <br/>
 
 
-### Fonctionnalités de l'API
+### 1.2. Fonctionnalités de l'API <a name='section-api-functionality'></a>
+[Back to top](#cell-toc)
 
 Voici les routes, statuts et fonctionnalités associées de l'API :  
 
@@ -86,9 +95,153 @@ Voici les routes, statuts et fonctionnalités associées de l'API :
 
 Un export de workspace Postman est disponible (depuis le répertoire "Postman" à la racine du projet) avec un exemple de chaque appel.
 
-
+<br/>
 
 <br/>
+
+## 2. Installation <a name='section-install'></a>
+
+Vous trouverez ci-dessous une procédure décrivant comment:
+
+   - installer et démarrer l'API du projet
+   - instancier et lancer les containers de test de l'API
+
+La procédure d'installation qui est décrite ci-dessous suppose que nous disposions de deux machines:
+
+   - <u>une machine server</u>  
+     (qui contiendra l'API)  
+     Dans notre cas, nous avons pris la VM mise à disposition par datascientest pour héberger l'API.  
+     Pour l'équipe datascientest, n'importe quelle machine (Linux de préférence) disposant des prérequis suivants 
+     devraient convenir:
+     
+      - docker version >= 20.10.12 installé et démon Docker démarré            
+      - minikube installé et démarré
+      - la commande kubectl doit également être disponible sur la machine
+
+   - <u>une machine cliente</u>  
+     (machine depuis laquelle les clients de l'API initieront leurs requêtes vers l'API)  
+     C'est la limitation en ressources disque de la VM (par rapport aux tailles de nos images Docker et aux nombres de 
+     containers à instancier qui nous a fait choisir ce type d'architecture ; à savoir dissocier la partie serveur de la 
+     partie cliente).  
+     Nous concernant, nous avons pris notre machine personnelle pour héberger les containers de tests de l'API.  
+     Pour l'équipe datatascientest, n'importe quelle machine (Linux de préférence) ayant accès à la machine qui 
+     hébergera l'API fera l'affaire.  
+     A noter qu'il faudra tout de même que les pré-requis suivants soient respectés sur le poste client:
+        - docker version >= 20.10.12 installé et démon Docker démarré
+        - docker-compose doit également être installé (version >= 2.2.3)
+        - il faudra de plus veiller à ce qu'une connexion ssh soit possible entre le poste client et la machine server (celle qui contiendra l'API).  
+          Cette condition est nécessaire pour permettre la mise en place d'une redirection de port via ssh entre ces deux machines.
+
+La procédure décrite ci-dessous permettra le déploiement et la mise en service de l'API sur la machine server 
+
+
+<u>Procédure de déploiement et démarrage de l'API</u>:
+
+> 1. Connectez vous sur la machine server
+
+> 2. Rendez vous dans un répertoire dans lequel nous allons récupérer le projet
+
+> 3. Suivez la procédure suivante pour récupérer le projet  
+     [procédure de récupération du projet](#sect-annexe-get-project)
+     
+> 4. Pré-requis pour l'utilisation d'ingress  
+     Nous devons à présent exécuter la commande suivante car l'environnement kubernetes cible mis en place dans le cadre 
+     de ce projet fait usage d'un ingress.  
+     Pour que tout fonctionne avec minikube, nous devons au préalable activer le controlleur Ingress à l'aide de la commande suivante:  
+>>
+>>`minikube addons enable ingress`
+
+> 5. Création de l'environnement kubernetes  
+     Les commandes suivantes vont permettre de déployer l'environnement kubernetes et d'instancier l'API dans un replicaset de taille: 3     
+>>
+>>`cd project/build/kubernetes`  
+>>`./create.sh`  
+>>
+Vous devriez obtenir le résultat suivant au niveau du terminal:  
+>>
+>>> deployment.apps/project2-deployment created  
+>>> service/project2-service created  
+>>> ingress.networking.k8s.io/project2-ingress created  
+>>
+Désormais l'API devrait être démarrée au sein d'un container lui-même hébergé dans un Pod au sein d'un environnement kubernetes et plus précisément au sein d'un replicaset de taille 3.
+>
+> 6. Info sur le service
+     Exécutez la commande suivante pour afficher les informations sur le service kubernetes qui a été créé pour l'API:
+>>
+>>   `kubectl get service project2-service`
+>
+     Si tout c'est bien passé vous devriez obtenir quelque chose comme suit:
+>>   NAME               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE  
+>>   project2-service   NodePort   10.98.199.16   <none>        5001:32616/TCP   4m41s  
+>
+     L'adresse IP (cluster-ip) et le numéro de port (32616) pourront être éventuellement différent sur votre affichage.
+>
+> 7. Service URL
+     Nous allons ici récupérer les informations qui nous permettrons d'accéder à l'API via le service kubernetes.  
+     Pour cela exécutez la commande suivante:
+>>
+>>   `minikube service project2-service --url`
+>
+     Vous devriez obtenir un résultat similaire à celui-ci:
+>>   http://192.168.49.2:32616  
+>
+     Une nouvelle fois vous pouvez obtenir une adresse IP différente de celle affichée et même chose pour le numéro de port.
+>
+> 8. Test manuel de l'API  
+     Nous allons à présent faire un test manuel pour vérifier que l'API est bien joignable via le service kubernetes.  
+     Pour cela exécutez la commande suivante:  
+>>
+>>   `curl -X GET http://192.168.49.2:32616/status`
+>
+     Le début de l'URL à utiliser pour joindre l'API est celle qui a été retourné par la commande de l'étape précédente.  
+     Vous devrez utiliser l'IP et le port qui a été affiché.
+     Le résultat attendu est le suivant:
+>>
+>>```
+     {  
+         "api":"project #2 - d\u00e9ploiement"  
+       , "authors":["Christelle PATTYN","David CHARLES-ELIE-NELSON"]  
+       , "context":"formation Data Engineer"  
+       , "status":"ok"  
+     }  
+>>```  
+>
+    Ici nous voyons que nous avons bien reçu un retour de l'API: l'API est donc parfaitement joignable depuis la machine server (celle qui héberge l'environnement kubernetes qui contient l'API).
+    Il nous reste cependant à vérifier le bon fonctionnement de l'API depuis une machine cliente (différente de celle sur laquelle nous sommes en ce moment).  
+    Pour cela, nous allons déployer les containers de tests qui auront la tâche de lancer plusieurs requêtes à l'API et d'en vérifier que le résultat onbtenu est bien celui attendu pour chacune des requêtes.
+    Reportez-vous sur la procédure "Lancer les tests de bon fonctionnement de l'API" ci-dessous.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 2. Travail réalisé <a name='section-work-done'></a>
 [Back to top](#cell-toc)
@@ -337,120 +490,6 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
    * Une fois l'installation faite, vous pouvez suivre la documentation ci-dessous pour mettre en route l'API et lancer les clients testeurs:
      <span style='color:darkgreen;'>docs/run_guide.md</span>
 
-
-<br/>
-
-## . Installation <a name='section-install'></a>
-
-Vous trouverez ci-dessous une procédure décrivant comment:
-
-   - installer et démarrer l'API du projet
-   - instancier et lancer les containers de test de l'API
-
-La procédure d'installation qui est décrite ci-dessous suppose que nous disposions de deux machines:
-
-   - <u>une machine server</u>  
-     (qui contiendra l'API)  
-     Dans notre cas, nous avons pris la VM mise à disposition par datascientest pour héberger l'API.  
-     Pour l'équipe datascientest, n'importe quelle machine (Linux de préférence) disposant des prérequis suivants 
-     devraient convenir:
-     
-      - docker version >= 20.10.12 installé et démon Docker démarré            
-      - minikube installé et démarré
-      - la commande kubectl doit également être disponible sur la machine
-
-   - <u>une machine cliente</u>  
-     (machine depuis laquelle les clients de l'API initieront leurs requêtes vers l'API)  
-     C'est la limitation en ressources disque de la VM (par rapport aux tailles de nos images Docker et aux nombres de 
-     containers à instancier qui nous a fait choisir ce type d'architecture ; à savoir dissocier la partie serveur de la 
-     partie cliente).  
-     Nous concernant, nous avons pris notre machine personnelle pour héberger les containers de tests de l'API.  
-     Pour l'équipe datatascientest, n'importe quelle machine (Linux de préférence) ayant accès à la machine qui 
-     hébergera l'API fera l'affaire.  
-     A noter qu'il faudra tout de même que les pré-requis suivants soient respectés sur le poste client:
-        - docker version >= 20.10.12 installé et démon Docker démarré
-        - docker-compose doit également être installé (version >= 2.2.3)
-        - il faudra de plus veiller à ce qu'une connexion ssh soit possible entre le poste client et la machine server (celle qui contiendra l'API).  
-          Cette condition est nécessaire pour permettre la mise en place d'une redirection de port via ssh entre ces deux machines.
-
-La procédure décrite ci-dessous permettra le déploiement et la mise en service de l'API sur la machine server 
-
-
-<u>Procédure de déploiement et démarrage de l'API</u>:
-
-> 1. Connectez vous sur la machine server
-
-> 2. Rendez vous dans un répertoire dans lequel nous allons récupérer le projet
-
-> 3. Suivez la procédure suivante pour récupérer le projet  
-     [procédure de récupération du projet](#sect-annexe-get-project)
-     
-> 4. Pré-requis pour l'utilisation d'ingress  
-     Nous devons à présent exécuter la commande suivante car l'environnement kubernetes cible mis en place dans le cadre 
-     de ce projet fait usage d'un ingress.  
-     Pour que tout fonctionne avec minikube, nous devons au préalable activer le controlleur Ingress à l'aide de la commande suivante:  
->>
->>`minikube addons enable ingress`
-
-> 5. Création de l'environnement kubernetes  
-     Les commandes suivantes vont permettre de déployer l'environnement kubernetes et d'instancier l'API dans un replicaset de taille: 3     
->>
->>`cd project/build/kubernetes`  
->>`./create.sh`  
->>
-Vous devriez obtenir le résultat suivant au niveau du terminal:  
->>
->>> deployment.apps/project2-deployment created  
->>> service/project2-service created  
->>> ingress.networking.k8s.io/project2-ingress created  
->>
-Désormais l'API devrait être démarrée au sein d'un container lui-même hébergé dans un Pod au sein d'un environnement kubernetes et plus précisément au sein d'un replicaset de taille 3.
->
-> 6. Info sur le service
-     Exécutez la commande suivante pour afficher les informations sur le service kubernetes qui a été créé pour l'API:
->>
->>   `kubectl get service project2-service`
->
-     Si tout c'est bien passé vous devriez obtenir quelque chose comme suit:
->>   NAME               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE  
->>   project2-service   NodePort   10.98.199.16   <none>        5001:32616/TCP   4m41s  
->
-     L'adresse IP (cluster-ip) et le numéro de port (32616) pourront être éventuellement différent sur votre affichage.
->
-> 7. Service URL
-     Nous allons ici récupérer les informations qui nous permettrons d'accéder à l'API via le service kubernetes.  
-     Pour cela exécutez la commande suivante:
->>
->>   `minikube service project2-service --url`
->
-     Vous devriez obtenir un résultat similaire à celui-ci:
->>   http://192.168.49.2:32616  
->
-     Une nouvelle fois vous pouvez obtenir une adresse IP différente de celle affichée et même chose pour le numéro de port.
->
-> 8. Test manuel de l'API  
-     Nous allons à présent faire un test manuel pour vérifier que l'API est bien joignable via le service kubernetes.  
-     Pour cela exécutez la commande suivante:  
->>
->>   `curl -X GET http://192.168.49.2:32616/status`
->
-     Le début de l'URL à utiliser pour joindre l'API est celle qui a été retourné par la commande de l'étape précédente.  
-     Vous devrez utiliser l'IP et le port qui a été affiché.
-     Le résultat attendu est le suivant:
->>
->>```
-     {  
-         "api":"project #2 - d\u00e9ploiement"  
-       , "authors":["Christelle PATTYN","David CHARLES-ELIE-NELSON"]  
-       , "context":"formation Data Engineer"  
-       , "status":"ok"  
-     }  
->>```  
->
-    Ici nous voyons que nous avons bien reçu un retour de l'API: l'API est donc parfaitement joignable depuis la machine server (celle qui héberge l'environnement kubernetes qui contient l'API).
-    Il nous reste cependant à vérifier le bon fonctionnement de l'API depuis une machine cliente (différente de celle sur laquelle nous sommes en ce moment).  
-    Pour cela, nous allons déployer les containers de tests qui auront la tâche de lancer plusieurs requêtes à l'API et d'en vérifier que le résultat onbtenu est bien celui attendu pour chacune des requêtes.
-    Reportez-vous sur la procédure "Lancer les tests de bon fonctionnement de l'API" ci-dessous.
 
 
 <br/>
