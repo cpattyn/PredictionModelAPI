@@ -520,7 +520,7 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
         - Support Vector Machine  
 
 
-    Nous avons donc exporté :  
+     Nous avons donc exporté :  
     
       - Les fichiers joblib des modèles DecisionTree, LogisticRegression, RandomForest et SupportVectorMachine.  
         Cela nous permettra d’instancier les modèles sans avoir à recharger les données ni à entrainer le modèle.  
