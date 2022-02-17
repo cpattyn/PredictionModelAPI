@@ -520,7 +520,9 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
         - Support Vector Machine  
       
     Nous avons donc exporté :  
-      - Les fichiers joblib des modèles DecisionTree, LogisticRegression, RandomForest et SupportVectorMachine.Cela nous permettra d’instancier les modèles sans avoir à recharger les données ni à entrainer le modèle  
+    
+      - Les fichiers joblib des modèles DecisionTree, LogisticRegression, RandomForest et SupportVectorMachine.  
+        Cela nous permettra d’instancier les modèles sans avoir à recharger les données ni à entrainer le modèle.  
       - Les fichiers de données train_features.csv / train_labels.csv / test_features.csv / test_labels.csv  
       - Un fichier features_num_min_max.csv qui contient pour l’ensemble des variables numériques, les valeurs min et max des données de train_features, qui correspond à l’échantillon qui a servi à entrainer les modèles.  
         Ce fichier permettra à l’API de choisir des valeurs aléatoires pour les variables numériques.   
