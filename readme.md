@@ -41,7 +41,7 @@ Il s'agit de quatre modèles permettant de prédire s'il va pleuvoir ou non dema
 
 Ces modèles sont enregistrés et ne sont pas ré-entrainés.
 
-Une API a été construite permettant d'interroger ces modèles sans être ré-entrainés.  
+Une API a été construite permettant d'interroger ces modèles.  
 Celle ci a été développée via la librairie Flask de Python.
 
 Les modèles conservés et qui seront accessibles côté API sont les modèles: 
@@ -61,7 +61,7 @@ Le test de prédiction n'est possible que pour les personnes authentifiées, ie 
 Pour réaliser cela, plusieurs containers ont été créés: 
    - un container Docker avec un serveur Ubuntu
    - un container Docker contenant l'API
-   - plusieurs containers de tests pour valider l'API
+   - plusieurs containers Docker de tests pour valider l'API
 
 L'API est déployé sur 3 Pods via une configuration Kubernetes.
 
@@ -161,7 +161,7 @@ Vous devriez obtenir le résultat suivant au niveau du terminal:
 
 Désormais l'API devrait être démarrée au sein d'un container lui-même hébergé dans un Pod au sein d'un environnement kubernetes et plus précisément au sein d'un replicaset de taille 3.
 
-**6. Info sur le service**  
+**6. Information sur le service**  
   
 Exécutez la commande suivante pour afficher les informations sur le service kubernetes qui a été créé pour l'API:
 
@@ -169,7 +169,7 @@ Exécutez la commande suivante pour afficher les informations sur le service kub
 kubectl get service project2-service
 ```
 
-Si tout c'est bien passé vous devriez obtenir quelque chose comme suit:  
+Si tout s'est bien passé vous devriez obtenir quelque chose comme suit:  
 >   NAME               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE  
 >   project2-service   NodePort   10.98.199.16   <none>        5001:32616/TCP   4m41s  
 
@@ -199,7 +199,7 @@ curl -X GET http://192.168.49.2:32616/status
 ```
 
 Le début de l'URL à utiliser pour joindre l'API est celle qui a été retourné par la commande de l'étape précédente.  
-Vous devrez utiliser l'IP et le port qui a été affiché.  
+Vous devrez utiliser l'IP et le port qui ont été affichés.  
 Le résultat attendu est le suivant:
 
 ```json
@@ -213,7 +213,7 @@ Le résultat attendu est le suivant:
 
 Ici nous voyons que nous avons bien reçu un retour de l'API: l'API est donc parfaitement joignable depuis la machine server (celle qui héberge l'environnement kubernetes qui contient l'API).  
 Il nous reste cependant à vérifier le bon fonctionnement de l'API depuis une machine cliente (différente de celle sur laquelle nous sommes en ce moment).  
-Pour cela, nous allons déployer les containers de tests qui auront la tâche de lancer plusieurs requêtes à l'API et d'en vérifier que le résultat onbtenu est bien celui attendu pour chacune des requêtes.  
+Pour cela, nous allons déployer les containers de tests qui auront la tâche de lancer plusieurs requêtes à l'API et d'en vérifier que le résultat obtenu est bien celui attendu pour chacune des requêtes.  
 Reportez-vous sur la procédure "Lancer les tests de bon fonctionnement de l'API" ci-dessous.  
 
 
@@ -226,13 +226,13 @@ Reportez-vous sur la procédure "Lancer les tests de bon fonctionnement de l'API
 La procédure décrite ci-dessous permettra de valider le bon fonctionnement de l'API en réalisant des requêtes de test 
 prédéfinies.  
 Ces requêtes seront exécutées par des containers Docker qui contienne la partie cliente du projet et qui réaliseront des requêtes sur l'API depuis un code Python.  
-Les retours fait par l'API seront analysés par les containers qui nous avertiront si des erreurs sont détectées.
+Les retours faits par l'API seront analysés par les containers qui nous avertiront si des erreurs sont détectées.
 
 <u>Procédure de lancement des tests de l'API</u>:
 
 **1. Connection à la machine cliente**  
 
-Connectez vous sur la machine cliente (machine Linux différente de celle ou tourne l'API) et rendez vous dans un répertoire dans lequel nous allons récupérer le projet
+Connectez vous sur la machine cliente (machine Linux différente de celle où tourne l'API) et rendez vous dans un répertoire dans lequel nous allons récupérer le projet
 
 **2. Suivez la procédure suivante pour récupérer le projet**  
 
@@ -384,14 +384,12 @@ Dans le cadre de ce projet nous avons utilisés les différentes briques techniq
      
      <u>ATTENTION</u>:  
      A noter que les fichiers les plus volumineux n'ont volontairement pas été inclus au niveau de GitHub (pour respecter le principe de GitHub qui n'est d'héberger que du code source).  
-     Les fichiers seront par cont
      Parmi les fichiers volumineux en question, nous avons:
      
         * Le fichier csv (correspondant à la partie DATA du projet)  
           Ce fichier csv est le fichier dont nous sommes partis pour construire nos modèles dans le cadre d'un apprentissage supervisé.
 
         * Les modèles de machine learning
-
 
 
 > Le compte GitHub ainsi que l'archive qui sera rendue contiennent donc les éléments suivants:
@@ -416,7 +414,7 @@ Dans le cadre de ce projet nous avons utilisés les différentes briques techniq
             Cette image servira de base pour créer les images Docker pour l'API (project2-api-server) et pour les clients (project2-client-tester).  
             L'image Docker correspondant à l'API avait une recommandation forte:  
             celle d'avoir la même version (ou éventuellement supérieure) de scikit-learn que celle qui a été utilisée depuis Google colab pour exporter les modèles dans des fichiers *.joblib. Cette restriction était nécessaire pour que le code Python utilisé côté API soit en mesure d'ouvrir les fichiers des modèles.  
-            Scikit learn ayant des pré-requis sur la version de Python, nous avons porté notre choix sur la version 3.8.5 de Python pour respecter les conditions d'installation de scikit learn v1.0.2 nous sommes fixés sur la version 3.8.5 de Python. Nous avons donc préparé une image (basée sur ubuntu) pour consolider un socle d'environnement Python avec une compatibilité complète la version de scikit learn de Google Colab.  
+            Scikit learn ayant des pré-requis sur la version de Python, nous avons porté notre choix sur la version 3.8.5 de Python pour respecter les conditions d'installation de scikit learn v1.0.2. Nous avons donc préparé une image (basée sur ubuntu) pour consolider un socle d'environnement Python compatible avec la version de scikit learn de Google Colab.  
             Nous avons ensuite décidé d'utiliser cette même image comme image de base pour la construction de l'image des containers clients (pour des raisons de facilité). Puisque l'image project2-ubuntu-python est construite en partie grâce à l'installation de Python depuis le code source, sa construction est assez longue (plusieurs longues minutes). Ainsi consolider ce socle Python dans une image dédiée, nous évite d'avoir à réinstaller constamment Python dans l'image Docker de l'API à chaque fois que le code de l'API change et que la reconstruction de l'image est nécessaire. Ce choix nous garantit un gain de temps énorme. 
 
           * <span style='color:darkcyan;'>api-server</span>
@@ -457,7 +455,7 @@ Dans le cadre de ce projet nous avons utilisés les différentes briques techniq
            <td>
               fichier qui contient les valeurs maximales et minimales des variables numériques utilisées par le 
               modèle.
-              Nous avons calculé, ces valeurs min et max depuis le jeu d'entrainement afin d'être en mesure de reproduire la transformation des valeurs numériques de la même façon qu'elles l'ont été lors de l'apprentissage.
+              Nous avons calculé ces valeurs min et max depuis le jeu d'entrainement afin d'être en mesure de reproduire la transformation des valeurs numériques de la même façon qu'elles l'ont été lors de l'apprentissage.
            </td>
         </tr>
      </table>
@@ -494,40 +492,79 @@ Dans le cadre de ce projet nous avons utilisés les différentes briques techniq
                <td>
                   fichier qui contient les valeurs maximales et minimales des variables numériques utilisées par le modèle.  
 Les différents modèles disponibles par l'API ont besoin de données en entrée (features) pour être en mesure de nous fournir une prédiction. S'il manque des valeurs le modèle ne pourra pas nous fournir de résultat. Cependant nous ne souhaitions pas apporter une contrainte trop forte sur la nécessité de fournir toutes les données puisque nous ne disposons pas d'appareils de mesure susceptibles de nous fournir des métriques telles que la pression atmosphérique ou encore la vitesse du vent.  
-Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoires pour les variables numériques et catégorielles. Autant pour les variables catégorielles nous connaissant la liste de valeurs possibles par variable, autant pour les variables numériques nous ne pouvons raisonner que par bornes (pour la génération de valeurs aléatoires). Nous avons donc choisi de considérer comme borne les valeurs minimales et maximales par variable telles qu'observées dans le jeu d'entrainement. Nous avons donc sauvegardé ces valeurs afin d'être en capacité de produire des valeurs aléatoires sans proposer de valeurs complètement aberrantes.
+Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoires pour les variables numériques et catégorielles. Autant pour les variables catégorielles nous connaissons la liste de valeurs possibles par variable, autant pour les variables numériques nous ne pouvons raisonner que par bornes (pour la génération de valeurs aléatoires). Nous avons donc choisi de considérer comme borne les valeurs minimales et maximales par variable telles qu'observées dans le jeu d'entrainement. Nous avons donc sauvegardé ces valeurs afin d'être en capacité de produire des valeurs aléatoires sans proposer de valeurs complètement aberrantes.
                </td>
                <td rowspan=2>valeurs de référence pour aider à produire des données aléatoires non aberrantes</td>
             </tr>
          </table>
 
 
-   * <span style='color:darkgreen;'>data</span>  
-     ce réperoire représente la base de données de notre API.  
+   * <span style='color:darkgreen;'>db</span>  
+     ce répertoire représente la base de données de notre API.  
      Pour fonctionner notre API a besoin de:
       - modèles de prédiction de pluie  
         Les modèles seront tous accessibles depuis le sous-répertoire <span style='color:darkgreen;'>models</span>
         De plus, le fichier *api_models.json* contient la liste des modèles disponibles pour l'API avec quelques caractéristiques par modèle. 
       - un scaler (objet de standardisation des variables explicatives ; paramétré avec le jeu d'entrainement)
-      - une base de données 
+      - un fichier credentials.csv qui contient les données d'authentification acceptées par l'API
 
+   * **notebooks**
+     répertoire contenant le fichier suivant:
+      * <span style='color:darkgreen;'>01_instantiate_model.ipynb</span>  
+    Ce notebook lance le chargement des données brutes (rains.csv), le process de nettoyage des données ainsi que l’entrainement des modèles.
+    L’objectif est d’enregistrer et exporter les modèles de machine learning que nous avions construit lors du projet1 pour nous permettre de construire l’API.  
+    Les modèles conservés et qui seront accessibles côté API sont les modèles : 
+        - Decision Tree
+        - Logistic Regression
+        - Random Forest
+        - Support Vector Machine  
+      
+    Nous avons donc exporté : 
+        - Les fichiers joblib des modèles DecisionTree, LogisticRegression, RandomForest et SupportVectorMachine.Cela nous permettra d’instancier les modèles sans avoir à recharger les données ni à entrainer le modèle
+        - Les fichiers de données train_features.csv / train_labels.csv / test_features.csv / test_labels.csv 
+        - Un fichier features_num_min_max.csv qui contient pour 
+        l’ensemble des variables numériques, les valeurs min et max des données de train_features, qui correspond à l’échantillon qui a servi à entrainer les modèles. 
+        Ce fichier permettra à l’API de choisir des valeurs aléatoires pour les variables numériques. 
+        Les données min et max ont été calculées avant que la normalisation StandardScaler ait été appliquée
 
+   * **postman**
+     répertoire contenant le fichier suivant:
+      * <span style='color:darkgreen;'>Project2_doc.postman_collection.json</span>, export d'un exemple pour chaque route d'appels à l'API. 
 
+   * **src**
 
-   * **docs**
-     répertoire contenant les fichiers suivants:
-      * <span style='color:darkgreen;'>doc1</span>
-          
+     répertoire contenant les répertoires et fichiers suivants:
+      * <span style='color:darkgreen;'>api</span>
+        * api.py
+        * authent.py
+        * credential.py
+        * data.py
+        * main.py
+        * model.py
+        * params.py
+        * scaler.py
+    
+      * <span style='color:darkgreen;'>tests</span>
+        * main.py
+        * params.py
+        * test.py
+        * test_authent.py
+        * test_models.py
+        * test_perf_model.py
+        * test_perf_models.py
+        * test_prediction.py
+        * test_status.py
 
-
-      * <span style='color:darkgreen;'>installation_guide.md</span>
-        une procédure d'installation
+        
 
 
       * <span style='color:darkgreen;'>test_guide.md</span>
         une procédure pour démarrer l'API et les clients testeurs.
 
 
-   * **src**
+
+
+
 
 <br/>
 
@@ -545,10 +582,10 @@ Exécutez ensuite la commande suivante:
 git clone https://github.com/dav-chris/project2.git ./project
 ```
 
-Le résultat de cette devrait être le suivant:  
+Le résultat devrait être le suivant:  
 un répertoire nommé "project2" devrait avoir été créé contenant tout le projet.  
 
-Si pour quelque raison que ce soit des difficultés étaient rencontrées lors de cette étape, il serait alors possible d'extraire le projet depuis l'archive qui a été fournie à DataScientest à l'aide de la commande suivante (en ayant pris soin préalablement d'être positionné dans le répertoire devant contenir le projet):
+Si pour quelque raison que ce soit, des difficultés étaient rencontrées lors de cette étape, il serait alors possible d'extraire le projet depuis l'archive qui a été fournie à DataScientest à l'aide de la commande suivante (en ayant pris soin préalablement d'être positionné dans le répertoire devant contenir le projet):
 
 ```bash
 tar xvfz project2-deploiement.tgz
