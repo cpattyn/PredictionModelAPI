@@ -498,7 +498,6 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
             </tr>
          </table>
 
-<br/>
 
    * <span style='color:darkgreen;'>db</span>  
      ce répertoire représente la base de données de notre API.  
@@ -509,7 +508,7 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
       - un scaler (objet de standardisation des variables explicatives ; paramétré avec le jeu d'entrainement)
       - un fichier credentials.csv qui contient les données d'authentification acceptées par l'API
 
-   * **notebooks**
+   * **notebooks**  
      répertoire contenant le fichier suivant:
       * <span style='color:darkgreen;'>01_instantiate_model.ipynb</span>  
     Ce notebook lance le chargement des données brutes (rains.csv), le process de nettoyage des données ainsi que l’entrainement des modèles.
@@ -520,13 +519,12 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
         - Random Forest
         - Support Vector Machine  
       
-    Nous avons donc exporté : 
-        - Les fichiers joblib des modèles DecisionTree, LogisticRegression, RandomForest et SupportVectorMachine.Cela nous permettra d’instancier les modèles sans avoir à recharger les données ni à entrainer le modèle
-        - Les fichiers de données train_features.csv / train_labels.csv / test_features.csv / test_labels.csv 
-        - Un fichier features_num_min_max.csv qui contient pour 
-        l’ensemble des variables numériques, les valeurs min et max des données de train_features, qui correspond à l’échantillon qui a servi à entrainer les modèles. 
-        Ce fichier permettra à l’API de choisir des valeurs aléatoires pour les variables numériques. 
-        Les données min et max ont été calculées avant que la normalisation StandardScaler ait été appliquée
+    Nous avons donc exporté :  
+      - Les fichiers joblib des modèles DecisionTree, LogisticRegression, RandomForest et SupportVectorMachine.Cela nous permettra d’instancier les modèles sans avoir à recharger les données ni à entrainer le modèle  
+      - Les fichiers de données train_features.csv / train_labels.csv / test_features.csv / test_labels.csv  
+      - Un fichier features_num_min_max.csv qui contient pour l’ensemble des variables numériques, les valeurs min et max des données de train_features, qui correspond à l’échantillon qui a servi à entrainer les modèles.  
+        Ce fichier permettra à l’API de choisir des valeurs aléatoires pour les variables numériques.   
+        Les données min et max ont été calculées avant que la normalisation StandardScaler ait été appliquée  
 
    * **postman**
      répertoire contenant le fichier suivant:
