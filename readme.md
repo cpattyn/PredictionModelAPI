@@ -518,7 +518,8 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
         - Logistic Regression
         - Random Forest
         - Support Vector Machine  
-      
+
+
     Nous avons donc exporté :  
     
       - Les fichiers joblib des modèles DecisionTree, LogisticRegression, RandomForest et SupportVectorMachine.  
