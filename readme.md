@@ -498,6 +498,7 @@ Nous avons donc incorporé au sein de l'API un générateur de valeurs aléatoir
             </tr>
          </table>
 
+<br/>
 
    * <span style='color:darkgreen;'>db</span>  
      ce répertoire représente la base de données de notre API.  
